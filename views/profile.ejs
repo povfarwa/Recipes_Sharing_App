@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef <%= user.name %> | RecipeShare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-orange-50 text-zinc-800 min-h-screen">
+
+    <nav class="bg-white shadow-sm py-4 px-10 flex justify-between items-center sticky top-0 z-50">
+        <h1 class="text-2xl font-bold text-orange-600 tracking-tight">Recipe<span class="text-zinc-800">Share</span></h1>
+        <a href="/logout" class="bg-orange-100 text-orange-600 hover:bg-orange-600 hover:text-white px-5 py-2 rounded-full text-sm font-semibold transition-all">Logout</a>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6 md:p-10">
+        
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-orange-100 flex flex-col md:flex-row items-center gap-8 mb-12">
+            <div class="relative">
+                <div class="w-32 h-32 rounded-full overflow-hidden ring-4 ring-orange-400 shadow-lg">
+                    <img class="w-full h-full object-cover" src="/images/uploads/<%= user.profileImage || 'default.png' %>" alt="Chef">
+                </div>
+                <form action="/upload" method="post" enctype="multipart/form-data" class="absolute -bottom-2 -right-2">
+                    <label class="bg-orange-600 p-2 rounded-full text-white cursor-pointer shadow-md hover:bg-orange-700 block transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <input onchange="this.form.submit()" type="file" name="image" class="hidden">
+                    </label>
+                </form>
+            </div>
+            <div class="text-center md:text-left">
+                <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-bold uppercase">Master Chef</span>
+                <h1 class="text-4xl font-bold mt-2">Chef <%= user.name %></h1>
+                <p class="text-zinc-500 mt-1">✨ Specialist in <span class="text-orange-600 font-semibold"><%= user.speciality %></span></p>
+                <div class="flex gap-4 mt-4 justify-center md:justify-start">
+                    <div class="text-center"><p class="font-bold text-xl"><%= user.recipes.length %></p><p class="text-xs text-zinc-400 uppercase">Recipes</p></div>
+                    <div class="w-[1px] bg-zinc-200 h-10"></div>
+                    <div class="text-center"><p class="font-bold text-xl"><%= user.experience %></p><p class="text-xs text-zinc-400 uppercase">Experience</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            
+            <div class="lg:col-span-1">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-orange-100 sticky top-28">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span class="text-2xl">👨‍🍳</span> Share Secret Recipe
+                    </h3>
+                    <form action="/post" method="post" class="space-y-4">
+                        <input type="text" name="title" placeholder="Recipe Name (e.g. Spicy Biryani)" required
+                            class="w-full bg-orange-50 border-none p-4 rounded-2xl outline-none focus:ring-2 focus:ring-orange-400 transition">
+                        
+                        <textarea name="ingredients" placeholder="Ingredients (Salt, Chicken, Love...)" required
+                            class="w-full bg-orange-50 border-none p-4 rounded-2xl outline-none focus:ring-2 focus:ring-orange-400 transition h-24 resize-none"></textarea>
+                        
+                        <textarea name="instructions" placeholder="Step by step instructions..." required
+                            class="w-full bg-orange-50 border-none p-4 rounded-2xl outline-none focus:ring-2 focus:ring-orange-400 transition h-32 resize-none"></textarea>
+                        
+                        <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-orange-200 transition-all transform hover:scale-[1.02]">
+                            Post Recipe
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2">
+                <h2 class="text-2xl font-bold mb-8 flex items-center gap-2">
+                    <span class="text-2xl">🔥</span> Your Kitchen Timeline
+                </h2>
+                
+                <div class="grid grid-cols-1 gap-6">
+                    <% user.recipes.reverse().forEach(function(item) { %>
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-zinc-100 hover:shadow-md transition-all group">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-2xl font-bold text-zinc-800 group-hover:text-orange-600 transition"><%= item.title %></h3>
+                                <a href="/delete/<%= item._id %>" class="text-zinc-300 hover:text-red-500 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-xs font-bold text-orange-500 uppercase tracking-widest mb-1">Ingredients</p>
+                                    <p class="text-zinc-600 text-sm leading-relaxed"><%= item.ingredients %></p>
+                                </div>
+                                <div class="bg-orange-50 p-4 rounded-2xl">
+                                    <p class="text-xs font-bold text-orange-500 uppercase tracking-widest mb-1">Method</p>
+                                    <p class="text-zinc-700 text-sm leading-relaxed"><%= item.instructions %></p>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
