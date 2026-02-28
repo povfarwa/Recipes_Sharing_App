@@ -2,7 +2,7 @@
 
 Welcome to **RecipeShare**! A cute and professional platform where food lovers can join, share their secret recipes, and build their culinary profile. No more messy handwritten notes—just pure cooking joy! ✨
 
-![Cooking GIF](https://i.pinimg.com/originals/0c/3b/5a/0c3b5a938661642845347a06c8a94665.gif)
+![Cooking GIF](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueXJ3bm9qZWh4ZzRndHBybm9qZWh4ZzRndHBybm9qZWh4ZzRndHByJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l41lTfuxV5R80WvwY/giphy.gif)
 
 * **🔐 Secure Chef Authentication:** Register and Login using JWT and Bcrypt encryption.
 * **🧑‍🍳 Chef Profiles:** Show off your specialty, experience, and your unique recipes.
